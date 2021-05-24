@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:students_record_app/Models/editStudentScreen.dart';
-
-import 'Models/studentModel.dart';
+import 'package:students_record_app/Models/studentModel.dart';
+import 'package:students_record_app/screens/editStudentScreen.dart';
 
 class StudentsListScreen extends StatefulWidget {
   @override

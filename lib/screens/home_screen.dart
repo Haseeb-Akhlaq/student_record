@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:students_record_app/add_a_student_screen.dart';
-import 'package:students_record_app/students_list_screen.dart';
+import 'package:students_record_app/screens/weeklyMarkingsScreen.dart';
+
+import 'file:///C:/Users/haseeb/AndroidStudioProjects/students_record_app/lib/screens/add_a_student_screen.dart';
+import 'file:///C:/Users/haseeb/AndroidStudioProjects/students_record_app/lib/screens/students_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -42,7 +44,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }),
             SizedBox(height: 40),
-            HomeScreenButton(text: 'Weekly Markings', onPressed: () {}),
+            HomeScreenButton(
+                text: 'Weekly Markings',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WeeklyMarkingScreen(),
+                    ),
+                  );
+                }),
           ],
         ),
       ),

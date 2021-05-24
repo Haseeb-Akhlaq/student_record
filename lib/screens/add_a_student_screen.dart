@@ -54,6 +54,30 @@ class _AddAStudentScreenState extends State<AddAStudentScreen> {
           'profilePic': imageUrl == ''
               ? 'https://static.thenounproject.com/png/630740-200.png'
               : imageUrl,
+          'attendanceWeek1': false,
+          'attendanceWeek2': false,
+          'attendanceWeek3': false,
+          'attendanceWeek4': false,
+          'attendanceWeek5': false,
+          'attendanceWeek6': false,
+          'attendanceWeek7': false,
+          'attendanceWeek8': false,
+          'attendanceWeek9': false,
+          'attendanceWeek10': false,
+          'attendanceWeek11': false,
+          'attendanceWeek12': false,
+          'marksWeek1': '0',
+          'marksWeek2': '0',
+          'marksWeek3': '0',
+          'marksWeek4': '0',
+          'marksWeek5': '0',
+          'marksWeek6': '0',
+          'marksWeek7': '0',
+          'marksWeek8': '0',
+          'marksWeek9': '0',
+          'marksWeek10': '0',
+          'marksWeek11': '0',
+          'marksWeek12': '0',
         });
         Navigator.pop(context);
       }
