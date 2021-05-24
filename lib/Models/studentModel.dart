@@ -79,13 +79,13 @@ class Student {
     this.marksWeek2 = map['marksWeek2'];
     this.marksWeek3 = map['marksWeek3'];
     this.marksWeek4 = map['marksWeek4'];
-    this.marksWeek1 = map['marksWeek5'];
-    this.marksWeek2 = map['marksWeek6'];
-    this.marksWeek3 = map['marksWeek7'];
-    this.marksWeek4 = map['marksWeek8'];
-    this.marksWeek1 = map['marksWeek9'];
-    this.marksWeek2 = map['marksWeek10'];
-    this.marksWeek3 = map['marksWeek11'];
-    this.marksWeek4 = map['marksWeek12'];
+    this.marksWeek5 = map['marksWeek5'];
+    this.marksWeek6 = map['marksWeek6'];
+    this.marksWeek7 = map['marksWeek7'];
+    this.marksWeek8 = map['marksWeek8'];
+    this.marksWeek9 = map['marksWeek9'];
+    this.marksWeek10 = map['marksWeek10'];
+    this.marksWeek11 = map['marksWeek11'];
+    this.marksWeek12 = map['marksWeek12'];
   }
 }

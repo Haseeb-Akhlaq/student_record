@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:students_record_app/screens/add_record_screen.dart';
 
 import '../Models/studentModel.dart';
 
@@ -76,6 +77,47 @@ class _WeeklyMarkingScreenState extends State<WeeklyMarkingScreen> {
       return student.attendanceWeek12;
     }
     return false;
+  }
+
+  String getWeekScore(Student student, int selectedWeek) {
+    if (selectedWeek == 1) {
+      return student.marksWeek1;
+    }
+    if (selectedWeek == 2) {
+      return student.marksWeek2;
+    }
+    if (selectedWeek == 3) {
+      print('3');
+      return student.marksWeek3;
+    }
+    if (selectedWeek == 4) {
+      return student.marksWeek4;
+    }
+    if (selectedWeek == 5) {
+      return student.marksWeek5;
+    }
+    if (selectedWeek == 6) {
+      return student.marksWeek6;
+    }
+    if (selectedWeek == 7) {
+      return student.marksWeek7;
+    }
+    if (selectedWeek == 8) {
+      return student.marksWeek8;
+    }
+    if (selectedWeek == 9) {
+      return student.marksWeek9;
+    }
+    if (selectedWeek == 10) {
+      return student.marksWeek10;
+    }
+    if (selectedWeek == 11) {
+      return student.marksWeek11;
+    }
+    if (selectedWeek == 12) {
+      return student.marksWeek12;
+    }
+    return '';
   }
 
   @override
@@ -242,7 +284,8 @@ class _WeeklyMarkingScreenState extends State<WeeklyMarkingScreen> {
                                       ),
                                     ),
                                     Text(
-                                      allStudents[index].marksWeek1,
+                                      getWeekScore(
+                                          allStudents[index], selectedWeek),
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.black,
@@ -267,7 +310,14 @@ class _WeeklyMarkingScreenState extends State<WeeklyMarkingScreen> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddRecordScreen(),
+                        ),
+                      );
+                    },
                     child: Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(
@@ -328,7 +378,9 @@ class CoursesSearch extends SearchDelegate<String> {
   }
 
   @override
-  Widget buildResults(BuildContext context) {}
+  Widget buildResults(BuildContext context) {
+    return null;
+  }
 
   @override
   Widget buildSuggestions(BuildContext context) {

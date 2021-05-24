@@ -164,21 +164,19 @@ class _AddAStudentScreenState extends State<AddAStudentScreen> {
                   SizedBox(
                     width: 20,
                   ),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton.icon(
+                    onPressed: () {
                       getImage();
                     },
-                    child: TextButton.icon(
-                      icon: Icon(
-                        Icons.photo,
+                    icon: Icon(
+                      Icons.photo,
+                      color: Colors.blue,
+                    ),
+                    label: Text(
+                      'Pick Image',
+                      style: TextStyle(
                         color: Colors.blue,
-                      ),
-                      label: Text(
-                        'Pick Image',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 12,
-                        ),
+                        fontSize: 12,
                       ),
                     ),
                   ),

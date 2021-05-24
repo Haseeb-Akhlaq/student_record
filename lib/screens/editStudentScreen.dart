@@ -130,21 +130,19 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                   SizedBox(
                     width: 20,
                   ),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton.icon(
+                    onPressed: () {
                       getImage();
                     },
-                    child: TextButton.icon(
-                      icon: Icon(
-                        Icons.photo,
+                    icon: Icon(
+                      Icons.photo,
+                      color: Colors.blue,
+                    ),
+                    label: Text(
+                      'Change Image',
+                      style: TextStyle(
                         color: Colors.blue,
-                      ),
-                      label: Text(
-                        'Change Image',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 12,
-                        ),
+                        fontSize: 12,
                       ),
                     ),
                   ),
