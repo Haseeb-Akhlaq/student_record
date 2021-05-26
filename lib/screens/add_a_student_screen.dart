@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:toast/toast.dart';
+import 'package:uuid/uuid.dart';
 
 class AddAStudentScreen extends StatefulWidget {
   @override
@@ -18,13 +19,14 @@ class _AddAStudentScreenState extends State<AddAStudentScreen> {
   bool isLoading = false;
 
   String studentName = '';
-  String studentId = '';
+  String rollNumber = '';
 
   File _image;
   final picker = ImagePicker();
   String imageUrl = '';
 
   saveData(BuildContext context) async {
+    var uuid = Uuid();
     bool isValid = _formKey.currentState.validate();
 
     if (!isValid) {
@@ -37,20 +39,28 @@ class _AddAStudentScreenState extends State<AddAStudentScreen> {
         isLoading = true;
       });
       final studentPath =
-          FirebaseFirestore.instance.collection('students').doc(studentId);
+          FirebaseFirestore.instance.collection('students').doc(rollNumber);
 
-      final studentData = await studentPath.get();
+      final user = await FirebaseFirestore.instance
+          .collection('students')
+          .where("rollNumber", isEqualTo: rollNumber)
+          .get();
 
-      if (studentData.exists) {
+      print(user.docs.length);
+
+      if (user.docs.length == 1) {
         Toast.show("Student Already Exists", context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       } else {
+        final studentId = uuid.v4();
+
         await FirebaseFirestore.instance
             .collection('students')
             .doc(studentId)
             .set({
           'studentName': studentName,
           'studentId': studentId,
+          'rollNumber': rollNumber,
           'profilePic': imageUrl == ''
               ? 'https://static.thenounproject.com/png/630740-200.png'
               : imageUrl,
@@ -154,6 +164,7 @@ class _AddAStudentScreenState extends State<AddAStudentScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
+                    backgroundColor: Colors.white,
                     radius: 80,
                     backgroundImage: NetworkImage(_image == null
                         ? 'https://static.thenounproject.com/png/630740-200.png'
@@ -239,14 +250,11 @@ class _AddAStudentScreenState extends State<AddAStudentScreen> {
                                     border: InputBorder.none,
                                   ),
                                   onSaved: (value) {
-                                    studentId = value;
+                                    rollNumber = value;
                                   },
                                   validator: (String value) {
                                     if (value.trim().isEmpty) {
                                       return 'Please enter a valid Id';
-                                    }
-                                    if (value.trim().length != 4) {
-                                      return 'Id must be of 4 characters';
                                     }
                                     return null;
                                   },

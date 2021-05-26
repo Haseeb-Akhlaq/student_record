@@ -3,20 +3,25 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:students_record_app/Models/studentModel.dart';
 
 class EditStudentScreen extends StatefulWidget {
   final Student student;
+  final Function editFromRecord;
+  final bool secondEdit;
 
-  const EditStudentScreen({this.student});
+  const EditStudentScreen({this.student, this.editFromRecord, this.secondEdit});
   @override
   _EditStudentScreenState createState() => _EditStudentScreenState();
 }
 
 class _EditStudentScreenState extends State<EditStudentScreen> {
   TextEditingController nameController = TextEditingController();
+  TextEditingController idController = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isUploading = false;
   bool isLoading = false;
@@ -27,6 +32,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
 
   setStudent() {
     nameController.text = widget.student.studentName;
+    idController.text = widget.student.rollNumber;
     imageUrl = widget.student.profilePic;
   }
 
@@ -47,7 +53,12 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
         .update({
       'studentName': nameController.text,
       'profilePic': imageUrl,
+      'rollNumber': idController.text,
     });
+
+    if (widget.secondEdit) {
+      widget.editFromRecord(imageUrl, nameController.text, idController.text);
+    }
 
     setState(() {
       isLoading = false;
@@ -120,6 +131,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
+                    backgroundColor: Colors.white,
                     radius: 80,
                     backgroundImage: NetworkImage(imageUrl == ''
                         ? 'https://static.thenounproject.com/png/630740-200.png'
@@ -183,6 +195,38 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                                     }
                                     if (value.length > 25) {
                                       return 'Please Enter Name less than 25 characters';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20.0, right: 10, top: 5, bottom: 5),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  controller: idController,
+                                  textAlign: TextAlign.left,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                  ],
+                                  decoration: InputDecoration(
+                                    hintText: 'Student Id',
+                                    border: InputBorder.none,
+                                  ),
+                                  onSaved: (value) {
+                                    idController.text = value;
+                                  },
+                                  validator: (String value) {
+                                    if (value.trim().isEmpty) {
+                                      return 'Please enter valid Id';
                                     }
                                     return null;
                                   },

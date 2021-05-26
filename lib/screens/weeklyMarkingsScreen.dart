@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:students_record_app/screens/add_record_screen.dart';
+import 'package:students_record_app/screens/studentRecordScreen.dart';
 
 import '../Models/studentModel.dart';
 
@@ -143,6 +144,9 @@ class _WeeklyMarkingScreenState extends State<WeeklyMarkingScreen> {
                 context: context,
                 delegate: CoursesSearch(
                   allStudents: allStudents,
+                  getWeekAttendance: getWeekAttendance,
+                  getWeekScore: getWeekScore,
+                  selectedWeek: selectedWeek,
                 ),
               );
             },
@@ -243,7 +247,7 @@ class _WeeklyMarkingScreenState extends State<WeeklyMarkingScreen> {
                       Row(
                         children: [
                           Text(
-                            'A     ',
+                            'A            ',
                             style: TextStyle(fontSize: 18),
                           ),
                           Text(
@@ -264,44 +268,51 @@ class _WeeklyMarkingScreenState extends State<WeeklyMarkingScreen> {
                         },
                         itemCount: allStudents.length,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: ListTile(
-                              minLeadingWidth: 0,
-                              trailing: Container(
-                                margin: EdgeInsets.only(bottom: 10),
-                                width: 50,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '${getWeekAttendance(allStudents[index], selectedWeek) ? 'Y' : 'N'}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Text(
-                                      getWeekScore(
-                                          allStudents[index], selectedWeek),
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
+                          return ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => StudentRecordScreen(
+                                    student: allStudents[index],
+                                  ),
                                 ),
+                              );
+                            },
+                            minLeadingWidth: 0,
+                            trailing: Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              width: 80,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${getWeekAttendance(allStudents[index], selectedWeek) ? 'Y' : 'N'}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    getWeekScore(
+                                        allStudents[index], selectedWeek),
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              title: Text(
-                                allStudents[index].studentName,
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              subtitle: Text(
-                                allStudents[index].studentId.trim(),
-                                style: TextStyle(fontSize: 16),
-                              ),
+                            ),
+                            title: Text(
+                              allStudents[index].studentName,
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            subtitle: Text(
+                              allStudents[index].rollNumber.trim(),
+                              style: TextStyle(fontSize: 16),
                             ),
                           );
                         }),
@@ -310,13 +321,17 @@ class _WeeklyMarkingScreenState extends State<WeeklyMarkingScreen> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddRecordScreen(),
+                          builder: (context) =>
+                              AddRecordScreen(selectedWeek: selectedWeek),
                         ),
                       );
+                      if (result == null) {
+                        reset();
+                      }
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -344,14 +359,22 @@ class _WeeklyMarkingScreenState extends State<WeeklyMarkingScreen> {
 
 class CoursesSearch extends SearchDelegate<String> {
   final List<Student> allStudents;
-  CoursesSearch({this.allStudents});
+  final Function getWeekAttendance;
+  final Function getWeekScore;
+  final int selectedWeek;
+
+  CoursesSearch(
+      {this.allStudents,
+      this.getWeekAttendance,
+      this.selectedWeek,
+      this.getWeekScore});
 
   List<Student> searchResults(String query) {
     if (query.isEmpty) {
       return allStudents;
     }
 
-    return allStudents.where((element) => element.studentId == query).toList();
+    return allStudents.where((element) => element.rollNumber == query).toList();
   }
 
   @override
@@ -393,39 +416,49 @@ class CoursesSearch extends SearchDelegate<String> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {},
-              child: Card(
-                elevation: 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    minLeadingWidth: 0,
-                    trailing: Container(
-                      width: 70,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Y'),
-                          Text('23'),
-                        ],
+              child: ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StudentRecordScreen(
+                        student: allStudents[index],
                       ),
                     ),
-                    leading: Container(
-                      width: 80,
-                      child: CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(allStudents[index].profilePic),
-                        radius: 30,
+                  );
+                },
+                minLeadingWidth: 0,
+                trailing: Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  width: 80,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${getWeekAttendance(results[index], selectedWeek) ? 'Y' : 'N'}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    title: Text(
-                      allStudents[index].studentName,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    subtitle: Text(
-                      allStudents[index].studentId.trim(),
-                      style: TextStyle(fontSize: 15),
-                    ),
+                      Text(
+                        getWeekScore(results[index], selectedWeek),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+                title: Text(
+                  results[index].studentName,
+                  style: TextStyle(fontSize: 20),
+                ),
+                subtitle: Text(
+                  results[index].rollNumber.trim(),
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
             );

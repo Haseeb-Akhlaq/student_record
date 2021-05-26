@@ -2,6 +2,7 @@ class Student {
   String studentId;
   String studentName;
   String profilePic;
+  String rollNumber;
 
   bool attendanceWeek1;
   bool attendanceWeek2;
@@ -63,6 +64,7 @@ class Student {
     this.studentName = map['studentName'] ?? '';
     this.studentId = map['studentId'] ?? '';
     this.profilePic = map['profilePic'] ?? '';
+    this.rollNumber = map['rollNumber'];
     this.attendanceWeek1 = map['attendanceWeek1'];
     this.attendanceWeek2 = map['attendanceWeek2'];
     this.attendanceWeek3 = map['attendanceWeek3'];

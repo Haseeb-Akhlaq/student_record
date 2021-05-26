@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:students_record_app/Models/studentModel.dart';
 import 'package:students_record_app/screens/editStudentScreen.dart';
+import 'package:students_record_app/screens/studentRecordScreen.dart';
 
 class StudentsListScreen extends StatefulWidget {
   @override
@@ -151,6 +152,16 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => StudentRecordScreen(
+                                    student: allStudents[index],
+                                  ),
+                                ),
+                              );
+                            },
                             minLeadingWidth: 0,
                             trailing: Container(
                               width: 70,
@@ -194,6 +205,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                             leading: Container(
                               width: 80,
                               child: CircleAvatar(
+                                backgroundColor: Colors.white,
                                 backgroundImage:
                                     NetworkImage(allStudents[index].profilePic),
                                 radius: 30,
@@ -204,7 +216,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                               style: TextStyle(fontSize: 16),
                             ),
                             subtitle: Text(
-                              allStudents[index].studentId.trim(),
+                              allStudents[index].rollNumber.trim(),
                               style: TextStyle(fontSize: 15),
                             ),
                           ),
@@ -229,7 +241,7 @@ class CoursesSearch extends SearchDelegate<String> {
       return allStudents;
     }
 
-    return allStudents.where((element) => element.studentId == query).toList();
+    return allStudents.where((element) => element.rollNumber == query).toList();
   }
 
   @override
@@ -276,6 +288,16 @@ class CoursesSearch extends SearchDelegate<String> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StudentRecordScreen(
+                            student: results[index],
+                          ),
+                        ),
+                      );
+                    },
                     minLeadingWidth: 0,
                     trailing: Container(
                       width: 70,
@@ -288,7 +310,9 @@ class CoursesSearch extends SearchDelegate<String> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => EditStudentScreen(
-                                    student: allStudents[index],
+                                    student: results[index],
+                                    secondEdit: false,
+                                    editFromRecord: null,
                                   ),
                                 ),
                               );
@@ -303,7 +327,7 @@ class CoursesSearch extends SearchDelegate<String> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              deleteUser(context, allStudents[index].studentId);
+                              deleteUser(context, results[index].studentId);
                             },
                             child: Icon(
                               Icons.delete,
@@ -316,17 +340,18 @@ class CoursesSearch extends SearchDelegate<String> {
                     leading: Container(
                       width: 80,
                       child: CircleAvatar(
+                        backgroundColor: Colors.white,
                         backgroundImage:
-                            NetworkImage(allStudents[index].profilePic),
+                            NetworkImage(results[index].profilePic),
                         radius: 30,
                       ),
                     ),
                     title: Text(
-                      allStudents[index].studentName,
+                      results[index].studentName,
                       style: TextStyle(fontSize: 16),
                     ),
                     subtitle: Text(
-                      allStudents[index].studentId.trim(),
+                      results[index].rollNumber.trim(),
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
