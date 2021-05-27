@@ -241,7 +241,9 @@ class CoursesSearch extends SearchDelegate<String> {
       return allStudents;
     }
 
-    return allStudents.where((element) => element.rollNumber == query).toList();
+    return allStudents
+        .where((element) => element.rollNumber.contains(query))
+        .toList();
   }
 
   @override
